@@ -27,7 +27,7 @@ def get_filenames_from_git_stage(
             ext = "." + ext
         ext = ext.replace(".", "\.")
 
-    file_re = re.compile(r"^[%s].\s+(.+%s)$" % (flag, ext))
+    file_re = re.compile(r"^[%s]. (.+%s)$" % (flag, ext))
     git = Popen(("git", "status", "--porcelain"), stdout=PIPE)
     stdout, stderr = git.communicate()
 
