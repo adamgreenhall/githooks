@@ -22,7 +22,12 @@ def get_filenames_from_git_stage(
     if not flag:
         raise ValueError("Must define at least one file mod flag.")
 
-    file_re = re.compile(r"^[%s]\s+(.+%s)$" % (flag, ext.replace(".", "\.")))
+    if ext:
+        if not ext.startswith("."):
+            ext = "." + ext
+        ext = ext.replace(".", "\.")
+
+    file_re = re.compile(r"^[%s]\s+(.+%s)$" % (flag, ext))
     git = Popen(("git", "status", "--porcelain"), stdout=PIPE)
     stdout, stderr = git.communicate()
 
