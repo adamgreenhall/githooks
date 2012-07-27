@@ -24,9 +24,10 @@ def get_filenames_from_git_stage(
 
     file_re = re.compile(r"^[%s]\s+(.+%s)$" % (flag, ext.replace(".", "\.")))
     git = Popen(("git", "status", "--porcelain"), stdout=PIPE)
+    stdout, stderr = git.communicate()
 
     files = []
-    for line in git.stdout:
+    for line in stdout:
         m = file_re.match(line)
         if m:
             files.append(m.groups()[0])
