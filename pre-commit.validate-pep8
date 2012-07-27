@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+
+import os
+import re
+import tempfile
+from subprocess import Popen, PIPE
+
+
+def get_filenames_from_git_stage(
+        ext=None, modified=True, created=True, deleted=True):
+    """
+    Get filenames that are staged in git
+
+    By default we gets all files that have been modified, deleted, or
+    created. You can change this behavior by modifying the default
+    arguments.
+    """
+    flag = ""
+    if modified:
+        flag += "M"
+    if created:
+        flag += "A"
+    if deleted:
+        flag += "D"
+
+    file_re = re.compile(r"^[%s]\s+(.+%s)$" % (flag, ext.replace(".", "\.")))
+    git = Popen(("git", "status", "--porcelain"), stdout=PIPE)
+
+    files = []
+    for line in git.stdout:
+        m = file_re.match(line)
+        if m:
+            files.append(m.groups()[0])
+
+    return files
+
+
+def get_file_from_git_stage(filename):
+    """
+    Get a file content from git
+    """
+    git = Popen(("git", "show", ":%s" % filename), stdout=PIPE)
+    stdout, stderr = git.communicate()
+    return stdout
+
+
+def pep8(python_src_code):
+    """
+    Run pep8 on some python source code
+    """
+    tmp_src = tempfile.NamedTemporaryFile()
+    tmp_src.write(python_src_code)
+    tmp_src.close()
+
+    pep8 = Popen(("pep8", tmp_src.name), stdout=PIPE)
+    stdout, stderr = pep8.communicate()
+    output = stdout.strip().split("\n")
+
+    os.unlink(tmp_src.name)
+
+    results = map(lambda s: s[len(tmp_src.name) + 1:], output)
+    return results
+
+
+if __name__ == "__main__":
+
+    import sys
+
+    exit_status = 0
+    for py_file in get_filenames_from_git_stage(ext=".py", deleted=False):
+        content = get_file_from_git_stage(py_file)
+        for line in pep8(content):
+            print "%s %s" % (py_file, line)
+            exit_status = 1
+
+    sys.exit(exit_status)
