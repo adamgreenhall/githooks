@@ -2,7 +2,7 @@
 
 exit_status=0
 
-python .git/hooks/pre-commit.pep8-validation.py
+python .git/hooks/pre-commit.pep8.py
 if [ $? == 1 ]; then exit_status=1; fi
 
 exit $exit_status
