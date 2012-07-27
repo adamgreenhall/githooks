@@ -5,48 +5,10 @@ Validate that all python files staged for commit are pep8 complaint
 """
 
 import os
-import re
 import tempfile
 import uuid
+
 from subprocess import Popen, PIPE
-
-
-def get_filenames_from_git_stage(
-        ext=None, modified=True, created=True, deleted=True):
-    """
-    Get filenames that are staged in git
-
-    By default we gets all files that have been modified, deleted, or
-    created. You can change this behavior by modifying the default
-    arguments.
-    """
-    flag = ""
-    if modified:
-        flag += "M"
-    if created:
-        flag += "A"
-    if deleted:
-        flag += "D"
-
-    file_re = re.compile(r"^[%s]\s+(.+%s)$" % (flag, ext.replace(".", "\.")))
-    git = Popen(("git", "status", "--porcelain"), stdout=PIPE)
-
-    files = []
-    for line in git.stdout:
-        m = file_re.match(line)
-        if m:
-            files.append(m.groups()[0])
-
-    return files
-
-
-def get_file_from_git_stage(filename):
-    """
-    Get a file content from git
-    """
-    git = Popen(("git", "show", ":%s" % filename), stdout=PIPE)
-    stdout, stderr = git.communicate()
-    return stdout
 
 
 def pep8(python_src_code):
@@ -72,6 +34,9 @@ def pep8(python_src_code):
 if __name__ == "__main__":
 
     import sys
+
+    from hook_utils import (
+        get_filenames_from_git_stage, get_file_from_git_stage)
 
     exit_status = 0
     for py_file in get_filenames_from_git_stage(ext=".py", deleted=False):
