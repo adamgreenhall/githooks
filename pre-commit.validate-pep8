@@ -7,6 +7,7 @@ Validate that all python files staged for commit are pep8 complaint
 import os
 import re
 import tempfile
+import uuid
 from subprocess import Popen, PIPE
 
 
@@ -52,17 +53,19 @@ def pep8(python_src_code):
     """
     Run pep8 on some python source code
     """
-    tmp_src = tempfile.NamedTemporaryFile()
-    tmp_src.write(python_src_code)
-    tmp_src.close()
+    tmp_dir = tempfile.gettempdir()
 
-    pep8 = Popen(("pep8", tmp_src.name), stdout=PIPE)
+    tmp_filename = os.path.join(tmp_dir, str(uuid.uuid4()))
+    with open(tmp_filename, mode="w") as tmp_file:
+        tmp_file.write(python_src_code)
+
+    pep8 = Popen(("pep8", tmp_filename), stdout=PIPE)
     stdout, stderr = pep8.communicate()
     output = stdout.strip().split("\n")
 
-    os.unlink(tmp_src.name)
+    os.unlink(tmp_filename)
 
-    results = map(lambda s: s[len(tmp_src.name) + 1:], output)
+    results = map(lambda s: s[len(tmp_filename) + 1:], output)
     return results
 
 
