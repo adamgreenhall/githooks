@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     import sys
 
-    from hook_utils import (
+    from git_utils import (
         get_filenames_from_git_stage, get_file_from_git_stage)
 
     exit_status = 0
