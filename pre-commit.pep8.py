@@ -21,7 +21,13 @@ def pep8(python_src_code):
     with open(tmp_filename, mode="w") as tmp_file:
         tmp_file.write(python_src_code)
 
-    pep8 = Popen(("pep8", tmp_filename), stdout=PIPE)
+    #
+    # E201 whitespace after '['
+    #
+    #  * The pep8 validator doesn't play well with list compressions.
+    #    The trade off is to just disable the check.
+    #
+    pep8 = Popen(("pep8", "--ignore=E201", tmp_filename), stdout=PIPE)
     stdout, stderr = pep8.communicate()
     output = stdout.strip().split("\n")
 
