@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+Validate that all python files staged for commit are pep8 complaint
+"""
+
 import os
 import re
 import tempfile
