@@ -27,7 +27,7 @@ def get_filenames_from_git_stage(
     stdout, stderr = git.communicate()
 
     files = []
-    for line in stdout:
+    for line in stdout.split("\n"):
         m = file_re.match(line)
         if m:
             files.append(m.groups()[0])
