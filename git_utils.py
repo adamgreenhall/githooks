@@ -19,6 +19,9 @@ def get_filenames_from_git_stage(
     if deleted:
         flag += "D"
 
+    if not flag:
+        raise ValueError("Must define at least one file mod flag.")
+
     file_re = re.compile(r"^[%s]\s+(.+%s)$" % (flag, ext.replace(".", "\.")))
     git = Popen(("git", "status", "--porcelain"), stdout=PIPE)
 
