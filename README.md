@@ -4,8 +4,8 @@ Some git hooks I find useful.
 
 installation
 ============
-Makes sure python and pep8 are on your path.
-
-On windows this would be your python install and the Scripts subdirectory underneath the python install directory.
-
-Copy or symlink the hooks into the .git/hooks directory of your repository.
+* Install python and pep8
+* Put them both on your path
+* Clone the repository
+* Remove .git/hooks from the repo you want to use githooks in
+* Symlink githooks to .git/hooks in the repo you want to use githooks in
