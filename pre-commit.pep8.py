@@ -29,7 +29,9 @@ def pep8(python_src_code):
     #
     pep8 = Popen(("pep8", "--ignore=E201", tmp_filename), stdout=PIPE)
     stdout, stderr = pep8.communicate()
-    output = stdout.strip().split("\n")
+    output = stdout.strip()
+    if output:
+        output = output.split("\n")
 
     os.unlink(tmp_filename)
 
