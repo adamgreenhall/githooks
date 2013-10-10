@@ -2,8 +2,8 @@
 
 exit_status=0
 
-python .git/hooks/pre-commit.pep8.py
-if [ $? == 1 ]; then exit_status=1; fi
+# python .git/hooks/pre-commit.pep8.py
+# if [ $? == 1 ]; then exit_status=1; fi
 python .git/hooks/pre-commit.pdb.py
 if [ $? == 1 ]; then exit_status=1; fi
 
