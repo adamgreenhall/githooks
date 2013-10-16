@@ -21,7 +21,7 @@ for filename in get_filenames_from_git_stage(".py"):
         if reduce(lambda a, b: a or b, 
             map(lambda pat: pat.search(line), breakpoints_re)):
             # pdb_import_re.search(line) or pdb_from_re.search(line)
-            print "%s has bp in ln#%d: %s" % (filename, line_no, line)
+            print "%s:%d: has breakpoint %s" % (filename, line_no, line)
             exit_status = 1
 if exit_status == 1:
   print('commit failed')
