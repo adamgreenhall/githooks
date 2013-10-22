@@ -11,7 +11,7 @@ breakpoints_re = map(lambda pat: re.compile(pat),
     )
 
 exit_status = 0
-for filename in get_filenames_from_git_stage(".py"):
+for filename in get_filenames_from_git_stage(".py", deleted=False):
     if checkPath(filename) > 0:
       exit_status = 1
     content = get_file_from_git_stage(filename)
