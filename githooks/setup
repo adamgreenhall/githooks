@@ -1,0 +1,13 @@
+#!/bin/bash
+# install the githooks for the current repo
+
+pip install pyflakes pep8 -q
+mkdir -p .git/hooks/
+
+cd .git/hooks/
+for file in ../../githooks/*.py; do
+    ln -s $file .
+done
+ln -s ../../githooks/pre-commit .
+chmod +x pre-commit
+ln -s ../../githooks/hooks.json .

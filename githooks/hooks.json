@@ -1,0 +1,11 @@
+{
+    "hooks": [
+        {
+            "name": "flake8",
+            "options": {"ignore": ["E501"]}
+            },
+        {
+            "name": "pdb"
+        }
+        ]
+}

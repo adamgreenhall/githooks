@@ -9,6 +9,5 @@ These are desinged to keep you from committing:
 
 installing
 ========================
-Add the ``githooks`` folder to your repo.
 
-And the enfore the githooks using: ``./githooks/setup``
+``./githooks/setup``
